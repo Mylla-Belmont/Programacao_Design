@@ -5,3 +5,6 @@ let picachu = {
 };
 
 console.log(picachu.nome);
+
+picachu.level ++;
+console.log(picachu.level);
