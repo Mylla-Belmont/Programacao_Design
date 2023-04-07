@@ -2,6 +2,7 @@ export {};
 
 class Conta {
     private saldo:number;
+    private titular:string;
 
     constructor() {
         this.saldo = 0;
@@ -22,6 +23,14 @@ class Conta {
 
     public getSaldo():number {
         return this.saldo;
+    }
+
+    public getTitular():string {
+        return this.titular;
+    }
+
+    public setTitular(novoNome:string) {
+        this.titular = novoNome;
     }
 }
 
