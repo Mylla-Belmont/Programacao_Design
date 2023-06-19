@@ -1,12 +1,15 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Bilheteria = void 0;
+var Venda_1 = require("./Venda");
 var Evento_1 = require("./Evento");
 var Cliente_1 = require("./Cliente");
 var Bilheteria = /** @class */ (function () {
     function Bilheteria() {
+        this.repVendas = [];
         this.repClientes = new Map();
         this.repEventos = new Map();
+        this.caixa = 0;
     }
     Bilheteria.prototype.getRepVendas = function () {
         return this.repVendas;
@@ -24,7 +27,6 @@ var Bilheteria = /** @class */ (function () {
         try {
             if (!this.repClientes.has(nome)) {
                 this.repClientes.set(nome, new Cliente_1.Cliente(nome, meia));
-                console.log("Cliente " + nome + " adicionado com sucesso!");
             }
             else {
                 throw Error("Cliente " + nome + " já existente!");
@@ -38,7 +40,6 @@ var Bilheteria = /** @class */ (function () {
         try {
             if (!this.repEventos.has(nome)) {
                 this.repEventos.set(nome, new Evento_1.Evento(nome, preco));
-                console.log("Evento " + nome + " adicionado com sucesso!");
             }
             else {
                 throw Error("Evento " + nome + " já existe!");
@@ -49,6 +50,32 @@ var Bilheteria = /** @class */ (function () {
         }
     };
     Bilheteria.prototype.vender = function (nome_cliente, nome_evento) {
+        try {
+            if (this.repClientes.has(nome_cliente)) {
+                if (this.repEventos.has(nome_evento)) {
+                    // Retorna cliente e evento para as constantes 
+                    var cliente = this.repClientes.get(nome_cliente);
+                    var evento = this.repEventos.get(nome_evento);
+                    // Caso algum deles seja undefined, retorna erro. Se não, a venda é cadastrada
+                    if (cliente !== undefined && evento !== undefined) {
+                        this.repVendas.push(new Venda_1.Venda(cliente, evento));
+                        this.caixa += evento.getPreco();
+                    }
+                    else {
+                        throw new Error("Cliente ou evento não encontrado!");
+                    }
+                }
+                else {
+                    throw Error("Evento não existe!");
+                }
+            }
+            else {
+                throw Error("Comprador não cadastrado!");
+            }
+        }
+        catch (error) {
+            console.log(error.message);
+        }
     };
     return Bilheteria;
 }());
